@@ -52,7 +52,7 @@ function createFeatures(earthquakeData) {
       return L.circle(latlng, {
         radius: radiusSize(earthquakeData.properties.mag),
         color: circleColor(earthquakeData.properties.mag),
-        fillOpacity: 3
+        fillOpacity: .5
       });
     },
       onEachFeature: onEachFeature
