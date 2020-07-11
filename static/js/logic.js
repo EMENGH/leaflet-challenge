@@ -19,16 +19,49 @@ function createFeatures(earthquakeData) {
                      "<hr><p>" + new Date(feature.properties.time) + "</p>");
    }
 
-   // Create GeoJSON layer containing the features array on the earthquakeData object
+   function radiusSize(magnitude) {
+    return magnitude * 20000;
+  }
+
+    // Define function to set the circle color based on the magnitude
+   function circleColor(magnitude) {
+      if (magnitude < 1) {
+        return "white"
+      }
+      else if (magnitude < 2) {
+        return "beige"
+      }
+      else if (magnitude < 3) {
+        return "green"
+      }
+      else if (magnitude < 4) {
+        return "orange"
+      }
+      else if (magnitude < 5) {
+        return "purple"
+      }
+      else {
+        return "red"
+      }
+  }
+
+   // Create GeoJSON layer with features array on the earthquakeData object
    // Run onEachFeature function once for each piece of data in the array
    var earthquakes = L.geoJSON(earthquakeData, {
-       onEachFeature: onEachFeature
+      pointToLayer: function(earthquakeData, latlng) {
+      return L.circle(latlng, {
+        radius: radiusSize(earthquakeData.properties.mag),
+        color: circleColor(earthquakeData.properties.mag),
+        fillOpacity: 3
+      });
+    },
+      onEachFeature: onEachFeature
    });
 
-   // Sending our earthquakes layer to the createMap function
+   // triggering createMap function
    createMap(earthquakes);
 }
-
+// Defining createMap function
 function createMap(earthquakes) {
 
   // Define streetmap and darkmap layers
@@ -72,4 +105,35 @@ function createMap(earthquakes) {
   L.control.layers(baseMaps, overlayMaps, {
     collapsed: false
   }).addTo(myMap);
+
+
+
+
+// color function to be used when creating the legend
+function getColor(d) {
+  return d > 5  ? 'red' :
+         d > 4  ? 'purple' :
+         d > 3  ? 'orange' :
+         d > 2  ? 'green' :
+         d > 1  ? 'beige' :
+                  'white';
+}
+
+// Insert legend to map
+var legend = L.control({position: 'bottomright'});
+legend.onAdd = function (map) {
+   var div = L.DomUtil.create('div', 'info legend'),
+       mags = [0, 1, 2, 3, 4, 5],
+       labels = [];
+
+   // loop through and generate a label with a colors for each magnitude interval
+   for (var i = 0; i < mags.length; i++) {
+       div.innerHTML += '<i style="background:' + getColor(mags[i] + 1) + '"></i> ' +
+             mags[i] + (mags[i + 1] ? '&ndash;' + mags[i + 1] + '<br>' : '+');
+   }
+   return div;
+};
+
+legend.addTo(myMap);
+
 }
