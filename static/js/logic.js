@@ -119,13 +119,12 @@ function getColor(d) {
 var legend = L.control({position: 'bottomright'});
 legend.onAdd = function (map) {
    var div = L.DomUtil.create('div', 'info legend'),
-       mags = [0, 1, 2, 3, 4, 5],
-       labels = [];
+       magnitude = [0, 1, 2, 3, 4, 5]  
 
    // loop through and generate a label with a colors for each magnitude interval
-   for (var i = 0; i < mags.length; i++) {
-       div.innerHTML += '<i style="background:' + getColor(mags[i] + 1) + '"></i> ' +
-             mags[i] + (mags[i + 1] ? '&ndash;' + mags[i + 1] + '<br>' : '+');
+   for (var i = 0; i < magnitude.length; i++) {
+       div.innerHTML += '<i style="background:' + getColor(magnitude[i] + 1) + '"></i> ' +
+       magnitude[i] + (magnitude[i + 1] ? '&ndash;' + magnitude[i + 1] + '<br>' : '+');
    }
    return div;
 };
