@@ -20,25 +20,25 @@ function createFeatures(earthquakeData) {
    }
 
    function radiusSize(magnitude) {
-    return magnitude * 20000;
+    return magnitude * 15000;
   }
 
     // Define function to set the circle color based on the magnitude
    function circleColor(magnitude) {
       if (magnitude < 1) {
-        return "white"
+        return "aqua"
       }
       else if (magnitude < 2) {
-        return "beige"
+        return "green"
       }
       else if (magnitude < 3) {
-        return "green"
+        return "yellow"
       }
       else if (magnitude < 4) {
         return "orange"
       }
       else if (magnitude < 5) {
-        return "purple"
+        return "brown"
       }
       else {
         return "red"
@@ -106,19 +106,15 @@ function createMap(earthquakes) {
     collapsed: false
   }).addTo(myMap);
 
-
-
-
 // color function to be used when creating the legend
 function getColor(d) {
   return d > 5  ? 'red' :
-         d > 4  ? 'purple' :
+         d > 4  ? 'brown' :
          d > 3  ? 'orange' :
-         d > 2  ? 'green' :
-         d > 1  ? 'beige' :
-                  'white';
+         d > 2  ? 'yellow' :
+         d > 1  ? 'green' :
+                  'aqua';
 }
-
 // Insert legend to map
 var legend = L.control({position: 'bottomright'});
 legend.onAdd = function (map) {
